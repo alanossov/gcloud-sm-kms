@@ -9,6 +9,9 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
 
     steps:
     - name: Checkout
@@ -25,7 +28,7 @@ jobs:
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        password: ${{ github.token }}
 
     - name: Build and Push Docker Image
       uses: docker/build-push-action@v6
@@ -34,5 +37,7 @@ jobs:
         file: ./Dockerfile
         platforms: linux/amd64,linux/arm64
         push: true
+        cache-from: type=registry,ref=${{ github.repository }:buildcache
+        cache-to: type=registry,ref=${{ github.repository }:buildcache,mode=max
         tags: |
           ghcr.io/${{ github.repository }}:latest
