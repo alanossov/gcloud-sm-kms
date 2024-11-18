@@ -28,7 +28,7 @@ jobs:
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ github.token }}
+        password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build and Push Docker Image
       uses: docker/build-push-action@v6
@@ -37,7 +37,7 @@ jobs:
         file: ./Dockerfile
         platforms: linux/amd64,linux/arm64
         push: true
-        cache-from: type=registry,ref=${{ github.repository }}:buildcache
-        cache-to: type=registry,ref=${{ github.repository }}:buildcache,mode=max
+        #cache-from: type=registry,ref=${{ github.repository }}:buildcache
+        #cache-to: type=registry,ref=${{ github.repository }}:buildcache,mode=max
         tags: |
           ghcr.io/${{ github.repository }}:latest

@@ -5,7 +5,7 @@ WORKDIR /app
 COPY . /app
 RUN go mod download && go build main
 
-FROM alpine:latest as runner
+FROM alpine:latest AS runner
 
 WORKDIR /app
 
